@@ -24,11 +24,20 @@
         }
         input[type="text"],
         input[type="date"],
-        select {
-            width: 100%;
+        select,
+        textarea {
+            width: 95%;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 3px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         button[type="submit"] {
             background-color: #007bff;
@@ -56,24 +65,64 @@
                 <input type="date" id="dob" name="dob" required>
             </div>
             <div class="form-group">
-                <label for="gender">Gender:</label>
-                <select id="gender" name="gender">
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
-                </select>
-            </div>
+                <label>Gender:</label><br>
+                <label for="male"><input type="radio" id="male" name="gender" value="male">Male</label><br>
+                <label for="female"><input type="radio" id="female" name="gender" value="female">Female</label><br>
+                <label for="other"><input type="radio" id="other" name="gender" value="other">Other</label>
+            </div><br>
             <div class="form-group">
-                <label for="hobbies">Hobbies:</label>
-                <input type="text" id="hobbies" name="hobbies">
+                <label for="hobbies">Hobbies:</label><br>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="reading" name="hobbies[]" value="Reading">
+                    <label for="reading">Reading</label>
+                    <input type="checkbox" id="sports" name="hobbies[]" value="Sports">
+                    <label for="sports">Sports</label>
+                    <input type="checkbox" id="music" name="hobbies[]" value="Music">
+                    <label for="music">Music</label>
+                    <input type="checkbox" id="traveling" name="hobbies[]" value="Traveling">
+                    <label for="traveling">Traveling</label>
+                    <input type="checkbox" id="cooking" name="hobbies[]" value="Cooking">
+                    <label for="cooking">Cooking</label>
+                    <!-- Add more hobbies as needed -->
+                </div>
             </div>
             <div class="form-group">
                 <label for="address">Address:</label>
-                <input type="text" id="address" name="address">
+                <textarea id="address" name="address" rows="4"></textarea>
             </div>
             <div class="form-group">
                 <label for="state">State:</label>
-                <input type="text" id="state" name="state">
+                <select id="state" name="state">
+                    <option value="Andhra Pradesh">Andhra Pradesh</option>
+                    <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                    <option value="Assam">Assam</option>
+                    <option value="Bihar">Bihar</option>
+                    <option value="Chhattisgarh">Chhattisgarh</option>
+                    <option value="Goa">Goa</option>
+                    <option value="Gujarat">Gujarat</option>
+                    <option value="Haryana">Haryana</option>
+                    <option value="Himachal Pradesh">Himachal Pradesh</option>
+                    <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                    <option value="Jharkhand">Jharkhand</option>
+                    <option value="Karnataka">Karnataka</option>
+                    <option value="Kerala">Kerala</option>
+                    <option value="Madhya Pradesh">Madhya Pradesh</option>
+                    <option value="Maharashtra">Maharashtra</option>
+                    <option value="Manipur">Manipur</option>
+                    <option value="Meghalaya">Meghalaya</option>
+                    <option value="Mizoram">Mizoram</option>
+                    <option value="Nagaland">Nagaland</option>
+                    <option value="Odisha">Odisha</option>
+                    <option value="Punjab">Punjab</option>
+                    <option value="Rajasthan">Rajasthan</option>
+                    <option value="Sikkim">Sikkim</option>
+                    <option value="Tamil Nadu">Tamil Nadu</option>
+                    <option value="Telangana">Telangana</option>
+                    <option value="Tripura">Tripura</option>
+                    <option value="Uttarakhand">Uttarakhand</option>
+                    <option value="Uttar Pradesh">Uttar Pradesh</option>
+                    <option value="West Bengal">West Bengal</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="resume">Resume (Upload .doc file):</label>
@@ -82,8 +131,6 @@
             <button type="submit">Submit</button>
             <button type="button">Cancel</button>
         </form>
-        <p>Notes:</p>
-        
     </div>
 </body>
 </html>
