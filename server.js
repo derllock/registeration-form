@@ -103,7 +103,7 @@ app.listen(PORT, () => {
 
 //show html file
 app.get('/register', function (req, res) {
-  res.sendFile(path.join(__dirname + '/mainPage.html'));
+  res.sendFile(path.join(__dirname + '/index.html'));
 });
 
 //view registered data
