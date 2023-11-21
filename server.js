@@ -2,9 +2,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const multer = require('multer'); // For file uploads
 const path = require('path');
-
+const cors = require('cors');
 const app = express();
+
 app.use(express.json());
+app.use(cors());
 
 
 const Swal = require('sweetalert2')
@@ -34,7 +36,11 @@ const storage = multer.diskStorage({
     cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
   },
 });
-const upload = multer({ storage: storage });
+const upload = multer({
+  storage: storage, limits: {
+    fileSize: 2 * 1024 * 1024, // Limit file size to 2MB
+  }
+});
 
 // Endpoint to handle form submission
 app.post('/process_registration', upload.single('resume'), async (req, res) => {

@@ -5,40 +5,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
+        /* Styles for the form */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 120vh;
+            background-color: #f5f5f5;
         }
 
         .container {
-            max-width: 400px;
-            margin: 0 auto;
+            background-color: #fff;
             padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            max-width: 100%;
+            text-align: center;
+            overflow: hidden;
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            text-align: left;
         }
 
         label {
-            display: block;
             font-weight: bold;
         }
 
         input[type="text"],
         input[type="date"],
         select,
-        textarea {
-            width: 95%;
+        textarea,
+        input[type="file"] {
+            width: calc(100% - 20px);
             padding: 10px;
             border: 1px solid #ccc;
-            border-radius: 3px;
+            border-radius: 5px;
+            margin-top: 5px;
         }
 
-        textarea {
-            resize: vertical;
+        input[type="file"] {
+            cursor: pointer;
         }
 
         .checkbox-group {
@@ -47,17 +61,40 @@
             gap: 10px;
         }
 
-        button[type="submit"] {
+        button[type="submit"],
+        button[type="button"],
+        .view-button {
             background-color: #007bff;
             color: #fff;
             border: none;
             padding: 10px 20px;
             border-radius: 3px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
-        button[type="submit"]:hover {
+        button[type="submit"]:hover,
+        button[type="button"]:hover,
+        .view-button:hover {
             background-color: #0056b3;
+        }
+
+        .file-label {
+            display: block;
+            text-align: left;
+            margin-bottom: 5px;
+        }
+
+        .upload-icon {
+            margin-right: 5px;
+        }
+        h2 {
+            margin-top: 0;
+        }
+
+        /* SweetAlert styles */
+        .swal2-popup {
+            font-size: 1.2em;
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -65,9 +102,9 @@
 
 <body>
     <div class="container">
-        <h2>Registration</h2>
+        <h2 style="margin-top: 0;" >Registration</h2>
         <form id="registrationForm" action="http://localhost:1001/process_registration" method="post"
-        enctype="multipart/form-data" onsubmit="submitForm(event)">
+            enctype="multipart/form-data" onsubmit="submitForm(event)">
             <div class="form-group">
                 <label for="name">Name:</label>
                 <input type="text" id="name" name="name" required>
@@ -78,7 +115,7 @@
             </div>
             <div class="form-group">
                 <label>Gender:</label><br>
-                <label for="male"><input type="radio" id="male" name="gender" value="male">Male</label><br>
+                <label for="male"><input type="radio" id="male" name="gender" value="male" checked>Male</label><br>
                 <label for="female"><input type="radio" id="female" name="gender" value="female">Female</label><br>
                 <label for="other"><input type="radio" id="other" name="gender" value="other">Other</label>
             </div><br>
@@ -137,20 +174,41 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="resume">Resume (Upload .doc file):</label>
+                <label class="file-label" for="resume">
+                    <i class="fas fa-cloud-upload-alt upload-icon"></i>Upload Resume (Max 2MB):
+                </label>
                 <input type="file" id="resume" name="resume" accept=".docx,.doc" required>
             </div>
-            <button type="submit">Submit</button>
-            <button type="button" onclick="clearForm()">Cancel</button>
-            <button onclick="window.location.href ='http://localhost:1001/view';"> View Records</button>
+            <div class="form-group">
+                <button type="submit">Submit</button>
+                <button type="button" onclick="clearForm()">Cancel</button>
+                <button type="submit" onclick="window.location.href ='http://localhost:1001/view';"> View Records</button>
+            </div>
         </form>
     </div>
 
     <script>
         async function submitForm(event) {
-           event.preventDefault();
+            event.preventDefault();
             const form = document.getElementById('registrationForm');
             const formData = new FormData(form);
+            const fileInput = document.getElementById('resume');
+
+            // Check file size before submitting the form
+            if (fileInput.files.length > 0) {
+                const fileSize = fileInput.files[0].size; // in bytes
+                const maxSize = 2 * 1024 * 1024; // 2MB in bytes
+
+                if (fileSize > maxSize) {
+                    // File size exceeds the limit, show SweetAlert error message
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'File Size Limit Exceeded',
+                        text: 'Please select a file smaller than 2MB'
+                    });
+                    return; // Prevent form submission
+                }
+            }
 
             try {
                 const response = await fetch('http://localhost:1001/process_registration', {
@@ -165,7 +223,7 @@
                         icon: 'success',
                         title: 'Registration Successful!',
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 2000
                     });
                     // Clear form fields without reloading
                     clearForm();
