@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        #registeredData {
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        #registeredData td,
+        #registeredData th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        #registeredData tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        #registeredData tr:hover {
+            background-color: #ddd;
+        }
+
+        #registeredData th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #aa045f;
+            color: white;
+        }
+    </style>
+</head>
+<!-- Add a table or structure to display the registered data -->
+<table id="registeredData">
+    <!-- Table headers -->
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Date of Birth</th>
+            <th>Gender</th>
+            <th>Hobbies</th>
+            <th>Address</th>
+            <th>State</th>
+            <th>Resume</th>
+        </tr>
+    </thead>
+    <!-- Table body to display registered data -->
+    <tbody id="registeredDataBody">
+        <!-- Data will be populated here -->
+
+    </tbody>
+</table>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+
+    // Frontend JavaScript - fetch registered data and populate the table
+    async function fetchRegisteredData() {
+        const response = await fetch('http://localhost:1001/get_registered_data');
+        console.log(response);
+        const data = await response.json();
+
+        const tableBody = document.getElementById('registeredDataBody');
+
+        data.forEach(entry => {
+            const row = tableBody.insertRow();
+            console.log(entry);
+            row.insertCell().textContent = entry.name;
+            row.insertCell().textContent = entry.dob.split('T')[0];
+            row.insertCell().textContent = entry.gender;
+            row.insertCell().textContent = entry.hobbies.join(', ');
+            row.insertCell().textContent = entry.address;
+            row.insertCell().textContent = entry.state;
+
+            // Create a download button for each resume
+            const downloadCell = row.insertCell();
+            const downloadBtn = document.createElement('a');
+            downloadBtn.href = `http://localhost:1001/download_resume/${entry._id}`;
+            downloadBtn.textContent = 'Download Resume';
+            downloadBtn.setAttribute('download', '');
+            // Add a click event listener to show Swal when the download button is clicked
+            downloadBtn.addEventListener('click', () => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Resume Downloaded!',
+                    text: 'Your resume has been downloaded successfully.'
+                });
+            });
+            downloadCell.appendChild(downloadBtn);
+        });
+    }
+    // Call the function to fetch and populate data when the page loads
+    window.onload = fetchRegisteredData;
+
+
+</script>
+
+<button onclick="window.location.href ='http://localhost:1001/register';"> Back </button>
+
+</html>

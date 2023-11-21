@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
         body {
             font-family: Arial, sans-serif;
         }
+
         .container {
             max-width: 400px;
             margin: 0 auto;
@@ -15,13 +17,16 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
+
         .form-group {
             margin-bottom: 15px;
         }
+
         label {
             display: block;
             font-weight: bold;
         }
+
         input[type="text"],
         input[type="date"],
         select,
@@ -31,14 +36,17 @@
             border: 1px solid #ccc;
             border-radius: 3px;
         }
+
         textarea {
             resize: vertical;
         }
+
         .checkbox-group {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
         }
+
         button[type="submit"] {
             background-color: #007bff;
             color: #fff;
@@ -47,15 +55,19 @@
             border-radius: 3px;
             cursor: pointer;
         }
+
         button[type="submit"]:hover {
             background-color: #0056b3;
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
+
 <body>
     <div class="container">
         <h2>Registration</h2>
-        <form action="process_registration.php" method="post">
+        <form id="registrationForm" action="http://localhost:1001/process_registration" method="post"
+        enctype="multipart/form-data" onsubmit="submitForm(event)">
             <div class="form-group">
                 <label for="name">Name:</label>
                 <input type="text" id="name" name="name" required>
@@ -88,7 +100,7 @@
             </div>
             <div class="form-group">
                 <label for="address">Address:</label>
-                <textarea id="address" name="address" rows="4"></textarea>
+                <textarea id="address" name="address" rows="4" required></textarea>
             </div>
             <div class="form-group">
                 <label for="state">State:</label>
@@ -126,11 +138,60 @@
             </div>
             <div class="form-group">
                 <label for="resume">Resume (Upload .doc file):</label>
-                <input type="file" id="resume" name="resume" accept=".doc">
+                <input type="file" id="resume" name="resume" accept=".docx,.doc" required>
             </div>
             <button type="submit">Submit</button>
-            <button type="button">Cancel</button>
+            <button type="button" onclick="clearForm()">Cancel</button>
+            <button onclick="window.location.href ='http://localhost:1001/view';"> View Records</button>
         </form>
     </div>
+
+    <script>
+        async function submitForm(event) {
+           event.preventDefault();
+            const form = document.getElementById('registrationForm');
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch('http://localhost:1001/process_registration', {
+                    method: 'POST',
+                    body: formData,
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    console.log(data);
+                    // If registration is successful, show SweetAlert success message
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Registration Successful!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    // Clear form fields without reloading
+                    clearForm();
+                }
+                //404
+                else if (response.status === 404) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: data.error,
+                    });
+                }
+            } catch (error) {
+                // Handle errors if registration fails
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Registration Failed',
+                    text: 'Please try again later'
+                });
+            }
+        }
+
+        function clearForm() {
+            const form = document.getElementById('registrationForm');
+            form.reset();
+        }
+    </script>
 </body>
+
 </html>
