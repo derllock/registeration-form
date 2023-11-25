@@ -4,14 +4,25 @@ const multer = require('multer'); // For file uploads
 const path = require('path');
 const cors = require('cors');
 const app = express();
-
+require('dotenv').config();
 app.use(express.json());
 app.use(cors());
 
 
 const Swal = require('sweetalert2')
 // Connect to MongoDB
-mongoose.connect('mongodb+srv://denissmaheshwari:aDLovVPtxkxv0kGp@cluster0.ndrflyo.mongodb.net/');
+mongoose.connect(process.env.MONGODB_URI).catch((error) => {                                                  //gives connection error messages like ip not listed
+  console.log(error.message)
+});
+mongoose.connection.on('connected', () => {                                //this is executed first on connection
+  console.log('Allright Mongoose connection established Yo');
+})
+mongoose.connection.on('error', (error) => {
+  console.log(error.message);
+})
+mongoose.connection.on('disconnected', () => {
+  console.log('Alas! Mongoose disconnected, See you next time');                              //this is executed first on SIGINT
+})
 
 // Mongoose Schema for Registration
 const registrationSchema = new mongoose.Schema({
@@ -96,7 +107,7 @@ app.get('/download_resume/:resumeId', async (req, res) => {
 });
 
 // Start server
-const PORT = process.env.PORT || 1001;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
