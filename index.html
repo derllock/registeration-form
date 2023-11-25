@@ -103,7 +103,7 @@
 <body>
     <div class="container">
         <h2 style="margin-top: 0;" >Registration</h2>
-        <form id="registrationForm" action="http://localhost:1001/process_registration" method="post"
+        <form id="registrationForm" action="https://register-yhfi.onrender.com/process_registration" method="post"
             enctype="multipart/form-data" onsubmit="submitForm(event)">
             <div class="form-group">
                 <label for="name">Name:</label>
@@ -120,7 +120,7 @@
                 <label for="other"><input type="radio" id="other" name="gender" value="other">Other</label>
             </div><br>
             <div class="form-group">
-                <label for="hobbies">Hobbies:</label><br>
+                <label for="hobbies">Hobbies (Min two):</label><br>
                 <div class="checkbox-group">
                     <input type="checkbox" id="reading" name="hobbies[]" value="Reading">
                     <label for="reading">Reading</label>
@@ -175,14 +175,14 @@
             </div>
             <div class="form-group">
                 <label class="file-label" for="resume">
-                    <i class="fas fa-cloud-upload-alt upload-icon"></i>Upload Resume (Max 2MB):
+                    <i class="fas fa-cloud-upload-alt upload-icon"></i>Upload Resume in doc (Max 2MB):
                 </label>
                 <input type="file" id="resume" name="resume" accept=".docx,.doc" required>
             </div>
             <div class="form-group">
                 <button type="submit">Submit</button>
                 <button type="button" onclick="clearForm()">Cancel</button>
-                <button type="submit" onclick="window.location.href ='http://localhost:1001/view';"> View Records</button>
+                <button type="submit" onclick="window.location.href ='https://register-yhfi.onrender.com/view';"> View Records</button>
             </div>
         </form>
     </div>
@@ -211,7 +211,7 @@
             }
 
             try {
-                const response = await fetch('http://localhost:1001/process_registration', {
+                const response = await fetch('https://register-yhfi.onrender.com/process_registration', {
                     method: 'POST',
                     body: formData,
                 });

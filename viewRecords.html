@@ -57,7 +57,7 @@
 
     // Frontend JavaScript - fetch registered data and populate the table
     async function fetchRegisteredData() {
-        const response = await fetch('http://localhost:1001/get_registered_data');
+        const response = await fetch('https://register-yhfi.onrender.com/get_registered_data');
         console.log(response);
         const data = await response.json();
 
@@ -76,7 +76,7 @@
             // Create a download button for each resume
             const downloadCell = row.insertCell();
             const downloadBtn = document.createElement('a');
-            downloadBtn.href = `http://localhost:1001/download_resume/${entry._id}`;
+            downloadBtn.href = `https://register-yhfi.onrender.com/download_resume/${entry._id}`;
             downloadBtn.textContent = 'Download Resume';
             downloadBtn.setAttribute('download', '');
             // Add a click event listener to show Swal when the download button is clicked
@@ -96,6 +96,6 @@
 
 </script>
 
-<button onclick="window.location.href ='http://localhost:1001/register';"> Back </button>
+<button onclick="window.location.href ='https://register-yhfi.onrender.com';"> Back </button>
 
 </html>

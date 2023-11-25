@@ -113,7 +113,7 @@ app.listen(PORT, () => {
 });
 
 //show html file
-app.get('/register', function (req, res) {
+app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname + '/index.html'));
 });
 
