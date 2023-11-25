@@ -117,7 +117,7 @@ app.get('/register', function (req, res) {
   res.sendFile(path.join(__dirname + '/index.html'));
 });
 
-//view registered data
+//view registered data 
 app.get('/view', function (req, res) {
   res.sendFile(path.join(__dirname + '/viewRecords.html'));
 });
